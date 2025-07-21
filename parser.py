@@ -1,5 +1,5 @@
-from json import *
-from game import *
+from json import loads
+from game import Body
 
 def parseBodies(filename: str) -> list[Body]:
 	output: list[Body] = []

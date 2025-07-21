@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from physics import *
+from physics import RADIANS, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod
 
 class Body:
 	BODIES: dict = dict()
@@ -23,9 +23,9 @@ class Body:
 			self.sma: float = orbital.get("sma")
 			self.ecc: float = orbital.get("ecc")
 
-			self.inc: float = orbital.get("inc") * pi / 180
-			self.arg: float = orbital.get("arg") * pi / 180
-			self.an: float = orbital.get("an") * pi / 180
+			self.inc: float = orbital.get("inc") * RADIANS
+			self.arg: float = orbital.get("arg") * RADIANS
+			self.an: float = orbital.get("an") * RADIANS
 
 			self.mean_anomaly: float = orbital.get("mean_anomaly")
 

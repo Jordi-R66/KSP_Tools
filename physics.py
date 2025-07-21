@@ -2,6 +2,8 @@ from math import *
 
 # Universal gravitational constant
 G: float = 6.67428e-11
+RADIANS: float = pi / 180
+DEGREES: float = 180 / pi
 
 def stdGravParam(mass: float) -> float:
 	"""Returns the gravitational parameter of a specific mass"""
