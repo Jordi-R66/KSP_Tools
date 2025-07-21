@@ -1,0 +1,320 @@
+{
+	"Bodies": [
+		{
+			"name": "Kerbol",
+			"physical": {
+				"radius": 261600000,
+				"mass": 1.7565459e28,
+				"sidereal_day": 432000.0,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": false
+			}
+		},
+		{
+			"name": "Moho",
+			"physical": {
+				"radius": 250000,
+				"mass": 2.5263314e21,
+				"sidereal_day": 1210000.0,
+				"solar_day": 2665723.4
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbol",
+				"sma": 5263138304,
+				"ecc": 0.2,
+				"inc": 7,
+				"arg": 15,
+				"an": 70,
+				"mean": 3.14
+			}
+		},
+		{
+			"name": "Eve",
+			"physical": {
+				"radius": 700000,
+				"mass": 1.2243980e23,
+				"sidereal_day": 80500.0,
+				"solar_day": 81661.857
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbol",
+				"sma": 9832684544,
+				"ecc": 0.01,
+				"inc": 2.1,
+				"arg": 0,
+				"an": 15,
+				"mean": 3.14
+			}
+		},
+		{
+			"name": "Gilly",
+			"physical": {
+				"radius": 13000,
+				"mass": 1.2420363e17,
+				"sidereal_day": 28255.0,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Eve",
+				"sma": 31500000,
+				"ecc": 0.55,
+				"inc": 12,
+				"arg": 10,
+				"an": 80,
+				"mean": 0.9
+			}
+		},
+		{
+			"name": "Kerbin",
+			"physical": {
+				"radius": 600000,
+				"mass": 5.2915158e22,
+				"sidereal_day": 21549.425,
+				"solar_day": 21600.0
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbol",
+				"sma": 13599840256,
+				"ecc": 0.0,
+				"inc": 0.0,
+				"arg": 0.0,
+				"an": 0.0,
+				"mean": 3.14
+			}
+		},
+		{
+			"name": "Mun",
+			"physical": {
+				"radius": 200000,
+				"mass": 9.7599066e20,
+				"sidereal_day": 138984.38,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbin",
+				"sma": 12000000,
+				"ecc": 0.0,
+				"inc": 0.0,
+				"arg": 0.0,
+				"an": 0.0,
+				"mean": 1.7
+			}
+		},
+		{
+			"name": "Minmus",
+			"physical": {
+				"radius": 60000,
+				"mass": 2.645758e19,
+				"sidereal_day": 40400,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbin",
+				"sma": 47000000,
+				"ecc": 0.0,
+				"inc": 6.0,
+				"arg": 38.0,
+				"an": 78.0,
+				"mean": 0.9
+			}
+		},
+		{
+			"name": "Duna",
+			"physical": {
+				"radius": 320000,
+				"mass": 4.5154270e21,
+				"sidereal_day": 65517.859,
+				"solar_day": 65766.707
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbol",
+				"sma": 20726155264,
+				"ecc": 0.051,
+				"inc": 0.06,
+				"arg": 0.0,
+				"an": 135.5,
+				"mean": 3.14
+			}
+		},
+		{
+			"name": "Ike",
+			"physical": {
+				"radius": 200000,
+				"mass": 2.7821615e20,
+				"sidereal_day": 65517.862,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Duna",
+				"sma": 3200000,
+				"ecc": 0.03,
+				"inc": 0.2,
+				"arg": 0.0,
+				"an": 0.0,
+				"mean": 1.7
+			}
+		},
+		{
+			"name": "Dres",
+			"physical": {
+				"radius": 138000,
+				"mass": 3.2190937e20,
+				"sidereal_day": 34800,
+				"solar_day": 34825.305
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbol",
+				"sma": 40839348203,
+				"ecc": 0.145,
+				"inc": 5.0,
+				"arg": 90,
+				"an": 280.0,
+				"mean": 3.14
+			}
+		},
+		{
+			"name": "Jool",
+			"physical": {
+				"radius": 6000000,
+				"mass": 4.2332127e24,
+				"sidereal_day": 36000.0,
+				"solar_day": 36012.387
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbol",
+				"sma": 68773560320,
+				"ecc": 0.05,
+				"inc": 1.304,
+				"arg": 0.0,
+				"an": 52.0,
+				"mean": 0.1
+			}
+		},
+		{
+			"name": "Laythe",
+			"physical": {
+				"radius": 500000,
+				"mass": 2.9397311e22,
+				"sidereal_day": 52980.9,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Jool",
+				"sma": 27184000,
+				"ecc": 0.0,
+				"inc": 100,
+				"arg": 0.0,
+				"an": 0.0,
+				"mean": 3.14
+			}
+		},
+		{
+			"name": "Vall",
+			"physical": {
+				"radius": 300000,
+				"mass": 3.1087655e21,
+				"sidereal_day": 105962.1,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Jool",
+				"sma": 43152000,
+				"ecc": 0.0,
+				"inc": 0.0,
+				"arg": 0.0,
+				"an": 0.0,
+				"mean": 0.9
+			}
+		},
+		{
+			"name": "Tylo",
+			"physical": {
+				"radius": 600000,
+				"mass": 4.2332127e22,
+				"sidereal_day": 211926.36,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Jool",
+				"sma": 68500000,
+				"ecc": 0.0,
+				"inc": 0.025,
+				"arg": 0.0,
+				"an": 0.0,
+				"mean": 3.14
+			}
+		},
+		{
+			"name": "Bop",
+			"physical": {
+				"radius": 650000,
+				"mass": 3.726109e19,
+				"sidereal_day": 544507.43,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Jool",
+				"sma": 128500000,
+				"ecc": 0.235,
+				"inc": 15.0,
+				"arg": 25.0,
+				"an": 10.0,
+				"mean": 0.9
+			}
+		},
+		{
+			"name": "Pol",
+			"physical": {
+				"radius": 44000,
+				"mass": 2.4328494e19,
+				"sidereal_day": 901902.62,
+				"solar_day": null
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Jool",
+				"sma": 179890000,
+				"ecc": 0.171,
+				"inc": 4.25,
+				"arg": 15.0,
+				"an": 2.0,
+				"mean": 0.9
+			}
+		},
+		{
+			"name": "Eeloo",
+			"physical": {
+				"radius": 210000,
+				"mass": 1.1149224e21,
+				"sidereal_day": 19460.0,
+				"solar_day": 19462.412
+			},
+			"orbital": {
+				"has_parent": true,
+				"parent": "Kerbol",
+				"sma": 90118820000,
+				"ecc": 0.25,
+				"inc": 6.15,
+				"arg": 260.0,
+				"an": 50.0,
+				"mean": 3.14
+			}
+		}
+	]
+}
