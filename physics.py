@@ -16,3 +16,11 @@ def sphereOfInfluence(mass: float, Mass: float, distance: float) -> float:
 		return float("inf")
 
 	return distance * (mass / Mass) ** (2/5)
+
+def smaFromPeriod(mass: float, Mass: float, period: float) -> float:
+	output: float = period / (2 * pi)
+	output **= 2
+	output *= stdGravParam(mass) + stdGravParam(Mass)
+	output **= 1/3
+
+	return output
