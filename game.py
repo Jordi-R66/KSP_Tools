@@ -4,15 +4,28 @@ from physics import *
 
 class Body:
 	BODIES: dict = dict()
+
+	def __init__(self, name: str, physical: dict, orbital: dict):
 		self.name: None | str = name
 
-		self.mass: float = mass
-		self.radius: float = radius
+		# Loading physical characteristics
+		self.mass: float = physical.get("mass")
+		self.radius: float = physical.get("radius")
+		self.sidereal_day: float = physical.get("sidereal_day")
+		self.solar_day: float = physical.get("solar_day")
 
-		self.sma: float = sma
-		self.parent: None | Body = parent
+		# Loading orbital parameters
+		self.has_parent: None | bool = orbital.get("has_parent")
 
-	def computeComplementary(self):
-		if (self.parent != None):
-			self.SOI: float = sphereOfInfluence(self.mass, self.parent.mass, self.sma)
+		if (self.has_parent):
+			self.parent_name: None | str = orbital.get("parent")
+
+			self.sma: float = orbital.get("sma")
+			self.ecc: float = orbital.get("ecc")
+
+			self.inc: float = orbital.get("inc") * pi / 180
+			self.arg: float = orbital.get("arg") * pi / 180
+			self.an: float = orbital.get("an") * pi / 180
+
+			self.mean_anomaly: float = orbital.get("mean_anomaly")
 
