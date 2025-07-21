@@ -24,3 +24,10 @@ def smaFromPeriod(mass: float, Mass: float, period: float) -> float:
 	output **= 1/3
 
 	return output
+
+def apoapsis(sma: float, ecc: float) -> float:
+	return sma * (1.0 + ecc)
+
+def periapsis(sma: float, ecc: float) -> float:
+	return sma * (1.0 - ecc)
+
