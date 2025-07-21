@@ -10,6 +10,14 @@
 			},
 			"orbital": {
 				"has_parent": false
+			},
+			"atmosphere": {
+				"hasAtmosphere": true,
+				"pressure": 16e3,
+				"height": 600000,
+				"temp_min": 3741.8,
+				"temp_max": 9348.05,
+				"hasOxygen": false
 			}
 		},
 		{
@@ -29,6 +37,9 @@
 				"arg": 15,
 				"an": 70,
 				"mean_anomaly": 3.14
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -48,6 +59,14 @@
 				"arg": 0,
 				"an": 15,
 				"mean_anomaly": 3.14
+			},
+			"atmosphere": {
+				"hasAtmosphere": true,
+				"pressure": 506.625e3,
+				"height": 90000,
+				"temp_min": -113.13,
+				"temp_max": 146.85,
+				"hasOxygen": false
 			}
 		},
 		{
@@ -67,6 +86,9 @@
 				"arg": 10,
 				"an": 80,
 				"mean_anomaly": 0.9
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -86,6 +108,14 @@
 				"arg": 0.0,
 				"an": 0.0,
 				"mean_anomaly": 3.14
+			},
+			"atmosphere": {
+				"hasAtmosphere": true,
+				"pressure": 101.325e3,
+				"height": 70000,
+				"temp_min": -86.2,
+				"temp_max": 15,
+				"hasOxygen": true
 			}
 		},
 		{
@@ -105,6 +135,9 @@
 				"arg": 0.0,
 				"an": 0.0,
 				"mean_anomaly": 1.7
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -124,6 +157,9 @@
 				"arg": 38.0,
 				"an": 78.0,
 				"mean_anomaly": 0.9
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -143,6 +179,14 @@
 				"arg": 0.0,
 				"an": 135.5,
 				"mean_anomaly": 3.14
+			},
+			"atmosphere": {
+				"hasAtmosphere": true,
+				"pressure": 6.755e3,
+				"height": 50000,
+				"temp_min": -123.15,
+				"temp_max": -40.15,
+				"hasOxygen": false
 			}
 		},
 		{
@@ -162,6 +206,9 @@
 				"arg": 0.0,
 				"an": 0.0,
 				"mean_anomaly": 1.7
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -181,6 +228,9 @@
 				"arg": 90,
 				"an": 280.0,
 				"mean_anomaly": 3.14
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -200,6 +250,14 @@
 				"arg": 0.0,
 				"an": 52.0,
 				"mean_anomaly": 0.1
+			},
+			"atmosphere": {
+				"hasAtmosphere": true,
+				"pressure": 1.51988e3,
+				"height": 200000,
+				"temp_min": -153.14,
+				"temp_max": -48.08,
+				"hasOxygen": false
 			}
 		},
 		{
@@ -219,6 +277,14 @@
 				"arg": 0.0,
 				"an": 0.0,
 				"mean_anomaly": 3.14
+			},
+			"atmosphere": {
+				"hasAtmosphere": true,
+				"pressure": 60.795e3,
+				"height": 50000,
+				"temp_min": -74.15,
+				"temp_max": 3.85,
+				"hasOxygen": true
 			}
 		},
 		{
@@ -238,6 +304,9 @@
 				"arg": 0.0,
 				"an": 0.0,
 				"mean_anomaly": 0.9
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -257,6 +326,9 @@
 				"arg": 0.0,
 				"an": 0.0,
 				"mean_anomaly": 3.14
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -276,6 +348,9 @@
 				"arg": 25.0,
 				"an": 10.0,
 				"mean_anomaly": 0.9
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -295,6 +370,9 @@
 				"arg": 15.0,
 				"an": 2.0,
 				"mean_anomaly": 0.9
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		},
 		{
@@ -314,6 +392,9 @@
 				"arg": 260.0,
 				"an": 50.0,
 				"mean_anomaly": 3.14
+			},
+			"atmosphere": {
+				"hasAtmosphere": false
 			}
 		}
 	]
