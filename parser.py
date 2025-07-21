@@ -1,0 +1,25 @@
+from json import *
+from game import *
+
+def parseBodies(filename: str) -> list[Body]:
+	output: list[Body] = []
+
+	fp = open(filename, "r", encoding="utf-8")
+
+	raw: str = fp.read()
+	unparsed_data: dict[list[dict[str: str, str: [dict[str: float]], str: dict[str: bool, str: str, str: float]]]] = loads(raw)
+
+	fp.close()
+
+	for body_raw in unparsed_data["Bodies"]:
+		name: str = body_raw["name"]
+		physical: dict = body_raw["physical"]
+		orbital: dict = body_raw["orbital"]
+
+		body: Body = Body(name, physical, orbital)
+
+		output.append(body)
+		Body.BODIES[name] = body
+		body.completeBody()
+
+	return list(output)
