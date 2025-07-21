@@ -3,7 +3,7 @@ from __future__ import annotations
 from physics import *
 
 class Body:
-	def __init__(self, name: str, mass: str, radius: str, sma: str, parent: None | Body):
+	BODIES: dict = dict()
 		self.name: None | str = name
 
 		self.mass: float = mass
