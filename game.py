@@ -5,7 +5,7 @@ from physics import *
 class Body:
 	BODIES: dict = dict()
 
-	def __init__(self, name: str, physical: dict, orbital: dict):
+	def __init__(self, name: str, physical: dict, orbital: dict, atmospheric: dict):
 		self.name: None | str = name
 
 		# Loading physical characteristics
@@ -28,6 +28,16 @@ class Body:
 			self.an: float = orbital.get("an") * pi / 180
 
 			self.mean_anomaly: float = orbital.get("mean_anomaly")
+
+		# Loading atmospheric characteristics
+		self.has_atmosphere: None | bool = atmospheric.get("has_atmosphere")
+
+		if (self.has_atmosphere):
+			self.pressure: float = atmospheric.get("pressure")
+			self.height: float = atmospheric.get("height")
+			self.temp_min: float = atmospheric.get("temp_min")
+			self.temp_max: float = atmospheric.get("temp_max")
+			self.has_oxygen: bool = atmospheric.get("has_oxygen")
 
 	def completeBody(self):
 		self.SOI: float = float('inf')

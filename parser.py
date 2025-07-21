@@ -13,10 +13,12 @@ def parseBodies(filename: str) -> list[Body]:
 
 	for body_raw in unparsed_data["Bodies"]:
 		name: str = body_raw["name"]
+
 		physical: dict = body_raw["physical"]
 		orbital: dict = body_raw["orbital"]
+		atmospheric: dict = body_raw["atmospheric"]
 
-		body: Body = Body(name, physical, orbital)
+		body: Body = Body(name, physical, orbital, atmospheric)
 
 		output.append(body)
 		Body.BODIES[name] = body
