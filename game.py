@@ -29,3 +29,22 @@ class Body:
 
 			self.mean_anomaly: float = orbital.get("mean_anomaly")
 
+	def completeBody(self):
+		self.SOI: float = float('inf')
+		self.stationary: float | None = None
+
+		if (self.has_parent):
+			self.parent: Body = None
+
+			if (self.parent_name in Body.BODIES.keys()):
+				self.parent = Body.BODIES.get(self.parent_name)
+
+			self.SOI = sphereOfInfluence(self.mass, self.parent.mass, self.sma)
+			self.apo = apoapsis(self.sma, self.ecc)
+			self.peri = periapsis(self.sma, self.ecc)
+
+		self.stationary = smaFromPeriod(self.mass, self.parent.mass, self.sidereal_day)
+
+		if (self.stationary > self.SOI):
+			self.stationary = None
+
