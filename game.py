@@ -116,3 +116,10 @@ class Body:
 		output["orbital"] = orbital
 
 		return output
+
+class Resource:
+	def __init__(self, name: str, density: float, unit_cost: int):
+		self.name: str = name
+		self.density: str = density
+		self.cost: str = unit_cost
+
