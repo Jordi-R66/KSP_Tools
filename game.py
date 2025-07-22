@@ -269,3 +269,10 @@ class Stage:
 				working_engines.add(engine)
 
 		return working_engines
+
+class Craft:
+	def __init__(self):
+		self.stages: list[Stage] = []
+
+	def addStages(self, stages: list[Stage]):
+		self.stages += stages
