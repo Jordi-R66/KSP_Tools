@@ -24,9 +24,13 @@ class Body:
 			self.sma: float = orbital.get("sma")
 			self.ecc: float = orbital.get("ecc")
 
-			self.inc: float = orbital.get("inc") * RADIANS
-			self.arg: float = orbital.get("arg") * RADIANS
-			self.an: float = orbital.get("an") * RADIANS
+			self.inc_degs: float = orbital.get("inc")
+			self.arg_degs: float = orbital.get("arg")
+			self.an_degs: float = orbital.get("an")
+
+			self.inc: float = self.inc_degs * RADIANS
+			self.arg: float = self.arg_degs * RADIANS
+			self.an: float = self.an_degs * RADIANS
 
 			self.mean_anomaly: float = orbital.get("mean_anomaly")
 
@@ -86,7 +90,7 @@ class Body:
 				"has_oxygen": self.has_oxygen
 			}
 		else:
-			atmosphere: dict = {
+			atmospheric: dict = {
 				"has_atmosphere": self.has_atmosphere
 			}
 
@@ -97,9 +101,9 @@ class Body:
 				"parent": self.parent_name,
 				"sma": self.sma,
 				"ecc": self.ecc,
-				"inc": self.inc * DEGREES,
-				"arg": self.arg * DEGREES,
-				"an": self.an * DEGREES,
+				"inc": self.inc_degs,
+				"arg": self.arg_degs,
+				"an": self.an_degs,
 				"mean_anomaly": self.mean_anomaly
 			}
 		else:
