@@ -1,4 +1,5 @@
-from math import *
+from algos import NewtonRaphson
+from math import pi, e, sqrt, log, sin, cos, atan
 
 # Universal gravitational constant
 G: float = 6.67428e-11
@@ -6,6 +7,25 @@ RADIANS: float = pi / 180
 DEGREES: float = 180 / pi
 
 REF_GRAVITY: float = 9.81
+DEFAULT_ITER: int = 100000
+ECCENTRIC_ANOMALY_TOLERANCE: float = 1E-5 * RADIANS
+
+def approxEccentricAnomaly(mean_anomaly: float, ecc: float) -> float:
+	return mean_anomaly + ecc * sin(mean_anomaly)
+
+def KeplerEquation(eccentric_anomaly: float, ecc: float) -> float:
+	return eccentric_anomaly - ecc * sin(eccentric_anomaly)
+
+def KeplerPrime(eccentric_anomaly: float, ecc: float) -> float:
+	return 1.0 - ecc * cos(eccentric_anomaly)
+
+def trueAnomaly(mean_anomaly: float, ecc: float) -> float:
+	eccentric_anomaly: float = NewtonRaphson(mean_anomaly, ecc, KeplerEquation, KeplerPrime, approxEccentricAnomaly(mean_anomaly, ecc), ECCENTRIC_ANOMALY_TOLERANCE, DEFAULT_ITER)
+
+	beta_: float = ecc / (1.0 + sqrt(1.0 - ecc**2))
+	nu_: float = eccentric_anomaly + 2.0 * atan((beta_*sin(eccentric_anomaly)) / (1.0 - beta_ * cos(eccentric_anomaly)))
+
+	return nu_
 
 def ln(x: float) -> float:
 	return log(x, e)
