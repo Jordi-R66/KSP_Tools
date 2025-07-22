@@ -186,3 +186,40 @@ class Engine(Part):
 
 		return pct
 
+class Tank(Part):
+	def __init__(self, name: float, dry_mass: float, cost: int):
+		super().__init__(name, dry_mass, cost)
+
+		self.subtanks: set[Subtank] = set()
+
+	def getResources(self) -> set[Resource]:
+		resources: set[Resource] = set()
+
+		for subtank in self.subtanks:
+			resources.add(subtank.resource)
+
+		return resources
+
+	def getRemainingResources(self) -> set[Resource]:
+		resources: set[Resource] = set()
+
+		for subtank in self.subtanks:
+			if (not subtank.isEmpty()):
+				resources.add(subtank.resource)
+
+		return resources
+
+	def addSubtank(self, subtank: Subtank) -> None:
+		self.subtanks.add(subtank)
+
+	def getTotalResourcesValues(self) -> float:
+		sum: float = 0.0
+
+		for subtank in self.subtanks:
+			sum += subtank.getResourceValue()
+
+		return sum
+
+	def getTotalCost(self) -> float:
+		return self.cost + self.getTotalResourcesValues()
+
