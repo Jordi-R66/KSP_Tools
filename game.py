@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from physics import RADIANS, deltaV, meanAnomalyAtUT, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod, orbitalSpeed_Circular, orbitalSpeed_Elliptical, orbitalSpeed_Parabolic, orbitalSpeed_Hyperbolic
+from physics import RADIANS, deltaV, meanAnomalyAtUT, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod, orbitalSpeed_Circular, orbitalSpeed_Elliptical, orbitalSpeed_Parabolic, orbitalSpeed_Hyperbolic, trueAnomaly, altitudeFromTrueAnomaly
 
 class Body:
 	BODIES: dict = dict()
@@ -406,5 +406,13 @@ class Orbit:
 			case _:
 				raise Exception("Couldn't identify current orbit class")
 
+	def altitudeAtUT(self, UT: float) -> float:
+		mean_ano: float = self.meanAnomalyAtUT(UT)
+		true_anomaly: float = trueAnomaly(mean_ano, self.ecc)
+
+		return altitudeFromTrueAnomaly(self.ecc, self.sma, true_anomaly)
+
 	def orbitalSpeedAtUT(self, UT: float) -> float:
-		raise Exception("Method not implemented")
+		altitude: float = self.altitudeAtUT(UT)
+
+		return self.orbitalSpeedAtAltitude(altitude)
