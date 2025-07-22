@@ -154,3 +154,35 @@ class Subtank:
 
 	def isEmpty(self) -> bool:
 		return self.quantity == 0.0
+
+class Engine(Part):
+	def __init__(self, name: str, mass: float, cost: int, fuel_mix: FuelMix, isp: int, thrust_vac: float, thrust_sea: float):
+		super().__init__(name, mass, cost)
+
+		self.fuel_mix: FuelMix = fuel_mix
+
+		self.isp: int = isp
+		self.thrust_vac: float = thrust_vac
+		self.thrust_sea: float = thrust_sea
+
+		self.thrust_pct: float = 100.0
+		self.current_thrust: float = self.thrust_vac * self.thrust_pct/100.0
+
+	def setThrustPct(self, pct: float) -> float:
+		self.thrust_pct = pct
+		self.current_thrust = self.thrust_vac * self.thrust_pct/100.0
+
+		return self.current_thrust
+
+	def computePct(self, thrust: float) -> float:
+		pct: float = thrust / self.thrust_vac * 100.0
+
+		if (pct > 100.0):
+			pct = 100.0
+		elif (pct < 0.0):
+			pct = 0.0
+
+		self.setThrustPct(pct)
+
+		return pct
+
