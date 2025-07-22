@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from physics import RADIANS, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod
+from physics import RADIANS, deltaV, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod
 
 class Body:
 	BODIES: dict = dict()
@@ -139,6 +139,9 @@ class Part:
 		self.mass: float = mass
 		self.cost: int = cost
 
+	def getMass(self):
+		return self.mass
+
 class Subtank:
 	def __init__(self, resource: Resource, capacity: float, quantity: float):
 		self.resource: Resource = resource
@@ -185,11 +188,17 @@ class Engine(Part):
 
 		return pct
 
+	def getMass(self) -> float:
+		return self.mass
+
 class Tank(Part):
 	def __init__(self, name: float, dry_mass: float, cost: int):
 		super().__init__(name, dry_mass, cost)
 
 		self.subtanks: set[Subtank] = set()
+
+	def addSubtank(self, subtank: Subtank) -> None:
+		self.subtanks.add(subtank)
 
 	def getResources(self) -> set[Resource]:
 		resources: set[Resource] = set()
@@ -208,19 +217,28 @@ class Tank(Part):
 
 		return resources
 
-	def addSubtank(self, subtank: Subtank) -> None:
-		self.subtanks.add(subtank)
-
-	def getTotalResourcesValues(self) -> float:
-		sum: float = 0.0
+	def getRemainingMasses(self) -> dict[Resource: float]:
+		resources: dict[Resource: float] = dict()
 
 		for subtank in self.subtanks:
-			sum += subtank.getResourceValue()
+			if (not subtank.isEmpty()):
+				resources[subtank.resource] = subtank.getResourceMass()
 
-		return sum
+		return resources
+
+	def getTotalResourcesCost(self) -> float:
+		value: float = 0.0
+
+		for subtank in self.subtanks:
+			value += subtank.getResourceValue()
+
+		return value
+
+	def getMass(self) -> float:
+		return self.mass + sum(self.getRemainingMasses().values())
 
 	def getTotalCost(self) -> float:
-		return self.cost + self.getTotalResourcesValues()
+		return self.cost + self.getTotalResourcesCost()
 
 class Stage:
 	def __init__(self):
@@ -243,6 +261,14 @@ class Stage:
 				engines.add(part)
 
 		return engines
+
+	def getMass(self) -> float:
+		mass: float = 0.0
+
+		for part in self.parts:
+			mass += part.getMass()
+
+		return mass
 
 	def getWorkingEngines(self) -> set[Engine]:
 		tanks: set[Tank] = self.getTanks()
@@ -268,6 +294,45 @@ class Stage:
 				working_engines.add(engine)
 
 		return working_engines
+
+	def getBurnableFuelMass(self) -> float:
+		tanks: set[Tank] = self.getTanks()
+		engines: set[Engine] = self.getWorkingEngines()
+
+		burnable_mass: float = 0.0
+		fuel_burned: set[Fuel] = set()
+
+		for engine in engines:
+			fuel_burned.update(set(engine.fuel_mix.fuels.keys()))
+
+		for tank in tanks:
+			tank_masses: dict[Resource: float] = tank.getRemainingMasses()
+
+			for resource, mass in tank_masses.items():
+				if (type(resource) == Fuel) and (resource in fuel_burned):
+					burnable_mass += mass
+
+		return burnable_mass
+
+	def getStageDeltaV(self) -> float:
+		engines: set[Engine] = self.getWorkingEngines()
+
+		ThrustSum: float = 0.0
+		RatioSum: float = 0.0
+
+		for engine in engines:
+			ThrustSum += engine.current_thrust
+			RatioSum += engine.current_thrust / engine.isp
+
+		stage_isp: float = ThrustSum / RatioSum
+		burnable_mass: float = self.getBurnableFuelMass()
+
+		total_mass: float = self.getMass()
+		dry_mass: float = total_mass - burnable_mass
+
+		delta_v: float = deltaV(dry_mass, total_mass, stage_isp)
+
+		return delta_v
 
 class Craft:
 	def __init__(self):

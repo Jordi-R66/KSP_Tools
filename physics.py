@@ -5,6 +5,14 @@ G: float = 6.67428e-11
 RADIANS: float = pi / 180
 DEGREES: float = 180 / pi
 
+REF_GRAVITY: float = 9.81
+
+def ln(x: float) -> float:
+	return log(x, e)
+
+def deltaV(dry_mass: float, wet_mass: float, isp: float, gravity: float=REF_GRAVITY) -> float:
+	return ln(wet_mass / dry_mass) * isp * gravity
+
 def stdGravParam(mass: float) -> float:
 	"""Returns the gravitational parameter of a specific mass"""
 	return mass * G
