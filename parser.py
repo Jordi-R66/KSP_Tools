@@ -22,6 +22,8 @@ def parseBodies(filename: str) -> list[Body]:
 
 		output.append(body)
 		Body.BODIES[name] = body
+
+	for body in output:
 		body.completeBody()
 
 	return list(output)
