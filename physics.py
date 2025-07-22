@@ -27,6 +27,9 @@ def trueAnomaly(mean_anomaly: float, ecc: float) -> float:
 
 	return nu_
 
+def altitudeFromTrueAnomaly(ecc: float, sma: float, true_anomaly: float) -> float:
+	return sma * (1.0 - ecc**2) / (1 + ecc * cos(true_anomaly))
+
 def ln(x: float) -> float:
 	return log(x, e)
 
