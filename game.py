@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from physics import RADIANS, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod
+from physics import RADIANS, DEGREES, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod
+from pprint import pprint
 
 class Body:
 	BODIES: dict = dict()
@@ -39,7 +40,7 @@ class Body:
 			self.temp_max: float = atmospheric.get("temp_max")
 			self.has_oxygen: bool = atmospheric.get("has_oxygen")
 
-	def completeBody(self):
+	def completeBody(self) -> None:
 		self.SOI: float = float('inf')
 		self.stationary: float | None = None
 
@@ -53,8 +54,27 @@ class Body:
 			self.apo = apoapsis(self.sma, self.ecc)
 			self.peri = periapsis(self.sma, self.ecc)
 
-		self.stationary = smaFromPeriod(self.mass, self.parent.mass, self.sidereal_day)
+		self.stationary = smaFromPeriod(0, self.mass, self.sidereal_day)
 
 		if (self.stationary > self.SOI):
 			self.stationary = None
 
+	def __str__(self) -> str:
+		header: str = f"""{self.name}"""
+
+		# PHYSICAL SECTION
+		physical: str = f"RADIUS: {self.radius:,} meters\nMASS: {self.mass:.7e} kg\nSIDEREAL DAY: {self.sidereal_day:,.3f} secs"
+
+		if not (self.solar_day is None):
+			physical += f"\nSOLAR DAY: {self.solar_day:,.3f} secs"
+
+		# ORBITAL SECTION
+		if (self.has_parent):
+			orbital: str = f"PARENT: {self.parent_name}\n\nSMA: {int(self.sma):,} meters\nECC: {self.ecc:.7f}\nINC: {self.inc * DEGREES:.2f} degs\nARG: {self.arg * DEGREES:.2f} degs\nAN: {self.an * DEGREES:.2f} degs\nMEAN ANO : {self.mean_anomaly * DEGREES:.2f} degs"
+		else:
+			orbital: str = f"NO PARENT BODY"
+
+		sections: list[str] = [header, physical, orbital]
+		output: str = f"\n{'-' * 45}\n".join(sections)
+
+		return f"{output}\n\n"
