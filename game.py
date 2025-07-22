@@ -123,3 +123,14 @@ class Resource:
 		self.density: str = density
 		self.cost: str = unit_cost
 
+class Fuel(Resource):
+	def __init__(self, name: str, density: float, unit_cost: int):
+		super().__init__(name, density, unit_cost)
+
+class FuelMix:
+	def __init__(self):
+		self.fuels: dict[Fuel: float] = dict()
+
+	def addFuel(self, fuel: Fuel, mass_ratio: float) -> None:
+		self.fuels[fuel] = mass_ratio
+
