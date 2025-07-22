@@ -134,3 +134,9 @@ class FuelMix:
 	def addFuel(self, fuel: Fuel, mass_ratio: float) -> None:
 		self.fuels[fuel] = mass_ratio
 
+class Part:
+	def __init__(self, name: str, mass: float, cost: int):
+		self.name: str = name
+		self.mass: float = mass
+		self.cost: int = cost
+
