@@ -35,7 +35,7 @@ class Body:
 
 		if (self.has_atmosphere):
 			self.pressure: float = atmospheric.get("pressure")
-			self.height: float = atmospheric.get("height")
+			self.atmosphere_height: float = atmospheric.get("height")
 			self.temp_min: float = atmospheric.get("temp_min")
 			self.temp_max: float = atmospheric.get("temp_max")
 			self.has_oxygen: bool = atmospheric.get("has_oxygen")
@@ -59,22 +59,56 @@ class Body:
 		if (self.stationary > self.SOI):
 			self.stationary = None
 
-	def __str__(self) -> str:
-		header: str = f"""{self.name}"""
+	def __dict__(self) -> str:
+		output: dict = {
+			"name": self.name,
+			"physical": {},
+			"atmospheric": {},
+			"orbital": {}
+		}
 
-		# PHYSICAL SECTION
-		physical: str = f"RADIUS: {self.radius:,} meters\nMASS: {self.mass:.7e} kg\nSIDEREAL DAY: {self.sidereal_day:,.3f} secs"
+		# Filling in physical characteristics
+		physical: dict = {
+			"radius": self.radius,
+			"mass": self.mass,
+			"sidereal_day": self.sidereal_day,
+			"solar_day": self.solar_day
+		}
 
-		if not (self.solar_day is None):
-			physical += f"\nSOLAR DAY: {self.solar_day:,.3f} secs"
-
-		# ORBITAL SECTION
-		if (self.has_parent):
-			orbital: str = f"PARENT: {self.parent_name}\n\nSMA: {int(self.sma):,} meters\nECC: {self.ecc:.7f}\nINC: {self.inc * DEGREES:.2f} degs\nARG: {self.arg * DEGREES:.2f} degs\nAN: {self.an * DEGREES:.2f} degs\nMEAN ANO : {self.mean_anomaly * DEGREES:.2f} degs"
+		# Filling in atmospheric characteristics
+		if (self.has_atmosphere):
+			atmospheric: dict = {
+				"has_atmosphere": self.has_atmosphere,
+				"pressure": self.pressure,
+				"height": self.atmosphere_height,
+				"temp_min": self.temp_min,
+				"temp_max": self.temp_max,
+				"has_oxygen": self.has_oxygen
+			}
 		else:
-			orbital: str = f"NO PARENT BODY"
+			atmosphere: dict = {
+				"has_atmosphere": self.has_atmosphere
+			}
 
-		sections: list[str] = [header, physical, orbital]
-		output: str = f"\n{'-' * 45}\n".join(sections)
+		# Filling in physical characteristics
+		if (self.has_parent):
+			orbital: dict = {
+				"has_parent": self.has_parent,
+				"parent": self.parent_name,
+				"sma": self.sma,
+				"ecc": self.ecc,
+				"inc": self.inc * DEGREES,
+				"arg": self.arg * DEGREES,
+				"an": self.an * DEGREES,
+				"mean_anomaly": self.mean_anomaly
+			}
+		else:
+			orbital: dict = {
+				"has_parent": self.has_parent
+			}
 
-		return f"{output}\n\n"
+		output["physical"] = physical
+		output["atmospheric"] = atmospheric
+		output["orbital"] = orbital
+
+		return output
