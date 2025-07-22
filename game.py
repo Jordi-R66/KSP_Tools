@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from physics import RADIANS, DEGREES, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod
-from pprint import pprint
+from physics import RADIANS, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod
 
 class Body:
 	BODIES: dict = dict()
