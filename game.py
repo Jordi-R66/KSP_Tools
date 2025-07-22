@@ -223,3 +223,49 @@ class Tank(Part):
 	def getTotalCost(self) -> float:
 		return self.cost + self.getTotalResourcesValues()
 
+class Stage:
+	def __init__(self):
+		self.parts: set[Part] = set()
+
+	def getTanks(self) -> set[Tank]:
+		tanks: set[Tank] = set()
+
+		for part in self.parts:
+			if type(part) == Tank:
+				tanks.add(part)
+
+		return tanks
+
+	def getEngines(self) -> set[Engine]:
+		engines: set[Engine] = set()
+
+		for part in self.parts:
+			if type(part) == Engine:
+				engines.add(part)
+
+		return engines
+
+	def getWorkingEngines(self) -> set[Engine]:
+		tanks: set[Tank] = self.getTanks()
+		engines: set[Engine] = self.getEngines()
+
+		working_engines: set[Engine] = set()
+		available_fuels: set[Resource] = set()
+
+		for tank in tanks:
+			tank_resources: set[Resource] = tank.getRemainingResources()
+
+			for resource in tank_resources:
+				if not (type(resource) == Fuel):
+					tank_resources.remove(resource)
+
+			available_fuels.update(tank_resources)
+
+		for engine in engines:
+			fuel_mix: FuelMix = engine.fuel_mix
+			fuels: set[Fuel] = set(fuel_mix.fuels.keys())
+
+			if (len(fuels) == available_fuels.intersection(fuels)):
+				working_engines.add(engine)
+
+		return working_engines
