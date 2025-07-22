@@ -140,3 +140,17 @@ class Part:
 		self.mass: float = mass
 		self.cost: int = cost
 
+class Subtank:
+	def __init__(self, resource: Resource, capacity: float, quantity: float):
+		self.resource: Resource = resource
+		self.capacity: float = capacity
+		self.quantity: float = quantity
+
+	def getResourceMass(self) -> float:
+		return self.resource.density * self.quantity
+
+	def getResourceValue(self) -> float:
+		return self.resource.cost * self.quantity
+
+	def isEmpty(self) -> bool:
+		return self.quantity == 0.0
