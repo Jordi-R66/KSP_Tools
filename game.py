@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from physics import RADIANS, deltaV, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod
+from physics import RADIANS, deltaV, meanAnomalyAtUT, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod, orbitalSpeed_Circular, orbitalSpeed_Elliptical, orbitalSpeed_Parabolic, orbitalSpeed_Hyperbolic
 
 class Body:
 	BODIES: dict = dict()
@@ -16,22 +16,22 @@ class Body:
 
 		# Loading orbital parameters
 		self.has_parent: None | bool = orbital.get("has_parent")
+		self.orbit: Orbit | None = None
 
 		if (self.has_parent):
 			self.parent_name: None | str = orbital.get("parent")
 
-			self.sma: float = orbital.get("sma")
-			self.ecc: float = orbital.get("ecc")
+			sma: float = orbital.get("sma")
+			ecc: float = orbital.get("ecc")
 
-			self.inc_degs: float = orbital.get("inc")
-			self.arg_degs: float = orbital.get("arg")
-			self.an_degs: float = orbital.get("an")
+			inc_degs: float = orbital.get("inc")
+			arg_degs: float = orbital.get("arg")
+			an_degs: float = orbital.get("an")
 
-			self.inc: float = self.inc_degs * RADIANS
-			self.arg: float = self.arg_degs * RADIANS
-			self.an: float = self.an_degs * RADIANS
+			mean_anomaly: float = orbital.get("mean_anomaly")
+			epoch: float = orbital.get("epoch")
 
-			self.mean_anomaly: float = orbital.get("mean_anomaly")
+			self.orbit = Orbit(self.mass, None, sma, ecc, inc_degs, arg_degs, an_degs, mean_anomaly, epoch)
 
 		# Loading atmospheric characteristics
 		self.has_atmosphere: None | bool = atmospheric.get("has_atmosphere")
@@ -52,6 +52,11 @@ class Body:
 
 			if (self.parent_name in Body.BODIES.keys()):
 				self.parent = Body.BODIES.get(self.parent_name)
+				self.orbit.parent_mass = self.parent.mass
+			else:
+				raise Exception(f"Couldn't find body named \"{self.parent_name}\"")
+
+			self.orbit.getOrbitClass()
 
 			self.SOI = sphereOfInfluence(self.mass, self.parent.mass, self.sma)
 			self.apo = apoapsis(self.sma, self.ecc)
@@ -340,3 +345,66 @@ class Craft:
 
 	def addStages(self, stages: list[Stage]):
 		self.stages += stages
+
+class Orbit:
+	CIRCULAR: str = "CIRCULAR"
+	ELLIPTICAL: str = "ELLIPTICAL"
+	PARABOLIC: str = "PARABOLIC"
+	HYPERBOLIC: str = "HYPERBOLIC"
+
+	def __init__(self, object_mass: float, parent_mass: float, sma: float, ecc: float, inc: float, arg: float, an: float, mean_ano: float, epoch: float = 0.0):
+		self.obj_mass: float = object_mass
+		self.parent_mass: float = parent_mass
+
+		self.sma: float = sma
+		self.ecc: float = ecc
+
+		self.inc_degs: float = inc
+		self.arg_degs: float = arg
+		self.an_degs: float = an
+
+		self.inc: float = inc * RADIANS
+		self.arg: float = arg * RADIANS
+		self.an: float = an * RADIANS
+
+		self.mean_anomaly: float = mean_ano
+		self.epoch = epoch
+
+		self.orbit_class: str = None
+
+	def getOrbitClass(self) -> str:
+		if (self.ecc == 0.0):
+			self.orbit_class = Orbit.CIRCULAR
+		elif (self.ecc < 1.0):
+			self.orbit_class = Orbit.ELLIPTICAL
+		elif (self.ecc == 1.0):
+			self.orbit_class = Orbit.PARABOLIC
+		elif (self.ecc > 1.0):
+			self.orbit_class = Orbit.HYPERBOLIC
+		else:
+			raise Exception("Eccentricity must be >= 0")
+
+		return self.orbit_class
+
+	def meanAnomalyAtUT(self, UT: float) -> float:
+		return meanAnomalyAtUT(self.obj_mass, self.parent_mass, self.sma, self.mean_anomaly, self.epoch, UT)
+
+	def orbitalSpeedAtAltitude(self, altitude: float) -> float:
+		match (self.orbit_class):
+			case Orbit.CIRCULAR:
+				return orbitalSpeed_Circular(self.obj_mass, self.parent_mass, self.sma,)
+
+			case Orbit.ELLIPTICAL:
+				return orbitalSpeed_Elliptical(self.obj_mass, self.parent_mass, altitude, self.sma)
+
+			case Orbit.PARABOLIC:
+				return orbitalSpeed_Parabolic(self.obj_mass, self.parent_mass, altitude)
+
+			case Orbit.HYPERBOLIC:
+				return orbitalSpeed_Hyperbolic(self.obj_mass, self.parent_mass, altitude, self.sma)
+
+			case _:
+				raise Exception("Couldn't identify current orbit class")
+
+	def orbitalSpeedAtUT(self, UT: float) -> float:
+		raise Exception("Method not implemented")
