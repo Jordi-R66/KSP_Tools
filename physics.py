@@ -88,7 +88,9 @@ def orbitalSpeed_Elliptical(mass: float, Mass: float, altitude: float, sma: floa
 	return sqrt(mu * (2.0 / altitude - 1.0 / sma))
 
 def orbitalSpeed_Circular(mass: float, Mass: float, sma: float) -> float:
-	return orbitalSpeed_Elliptical(mass, Mass, sma, sma)
+	mu: float = stdGravParam(mass) + stdGravParam(Mass)
+
+	return sqrt(mu / sma)
 
 def orbitalSpeed_Parabolic(mass: float, Mass: float, altitude: float) -> float:
 	mu: float = stdGravParam(mass) + stdGravParam(Mass)
