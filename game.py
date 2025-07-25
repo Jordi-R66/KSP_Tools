@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from physics import RADIANS, deltaV, meanAnomalyAtUT, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod, orbitalSpeed_Circular, orbitalSpeed_Elliptical, orbitalSpeed_Parabolic, orbitalSpeed_Hyperbolic, trueAnomaly, altitudeFromTrueAnomaly
+from physics import RADIANS, deltaV, stdGravParam, meanMotion, meanAnomalyAtUT, sphereOfInfluence, apoapsis, periapsis, smaFromPeriod, orbitalSpeed_Circular, orbitalSpeed_Elliptical, orbitalSpeed_Parabolic, orbitalSpeed_Hyperbolic, trueAnomaly, distanceToCenterFromTrueAnomaly
+
+class Config:
+	ATMO_OCCLUSION: float = 1
+	SOLID_OCCLUSION: float = 1
 
 class Body:
 	BODIES: dict = dict()
