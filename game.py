@@ -107,22 +107,8 @@ class Body:
 				"has_atmosphere": self.has_atmosphere
 			}
 
-		# Filling in physical characteristics
-		if (self.has_parent):
-			orbital: dict = {
-				"has_parent": self.has_parent,
-				"parent": self.parent_name,
-				"sma": self.sma,
-				"ecc": self.ecc,
-				"inc": self.inc_degs,
-				"arg": self.arg_degs,
-				"an": self.an_degs,
-				"mean_anomaly": self.mean_anomaly
-			}
-		else:
-			orbital: dict = {
-				"has_parent": self.has_parent
-			}
+		# Filling in orbital characteristics
+		orbital: dict = self.orbit.__dict__()
 
 		output["physical"] = physical
 		output["atmospheric"] = atmospheric
@@ -382,6 +368,27 @@ class Orbit:
 		self.epoch = epoch
 
 		self.orbit_class: str = None
+
+
+	def __dict__(self) -> dict:
+		if (self.has_parent):
+			orbital: dict = {
+				"has_parent": self.has_parent,
+				"parent": self.parent.name,
+				"sma": self.sma,
+				"ecc": self.ecc,
+				"inc": self.inc_degs,
+				"arg": self.arg_degs,
+				"an": self.an_degs,
+				"epoch": self.epoch,
+				"mean_anomaly": self.mean_anomaly
+			}
+		else:
+			orbital: dict = {
+				"has_parent": self.has_parent
+			}
+
+		return orbital
 
 	def getOrbitClass(self) -> str:
 		if (self.ecc == 0.0):
