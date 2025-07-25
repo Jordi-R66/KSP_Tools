@@ -51,6 +51,13 @@ class Body:
 		self.SOI: float = float('inf')
 		self.stationary: float | None = None
 
+		self.safetyLimit: float = self.radius
+
+		if (self.has_atmosphere):
+			self.safetyLimit += self.atmosphere_height
+
+		self.commsOccluded: float = self.safetyLimit * (Config.ATMO_OCCLUSION if self.has_atmosphere else Config.SOLID_OCCLUSION)
+
 		if (self.has_parent):
 			self.parent: Body = None
 
