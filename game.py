@@ -369,6 +369,29 @@ class Orbit:
 
 		self.orbit_class: str = None
 
+	def copyValues(self) -> Orbit:
+		copy: Orbit = Orbit(0.0, None, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, True)
+
+		copy.has_parent = self.has_parent
+
+		copy.obj_mass = self.obj_mass
+		copy.parent = self.parent
+
+		copy.sma = self.sma
+		copy.ecc = self.ecc
+
+		copy.inc_degs = self.inc_degs
+		copy.arg_degs = self.arg_degs
+		copy.an_degs = self.an_degs
+
+		copy.inc = self.inc
+		copy.arg = self.arg
+		copy.an = self.an
+
+		copy.mean_anomaly = self.mean_anomaly
+		copy.epoch = self.epoch
+
+		return copy
 
 	def __dict__(self) -> dict:
 		if (self.has_parent):
