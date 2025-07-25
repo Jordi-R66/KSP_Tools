@@ -63,15 +63,13 @@ class Body:
 
 			if (self.parent_name in Body.BODIES.keys()):
 				self.parent = Body.BODIES.get(self.parent_name)
-				self.orbit.parent_mass = self.parent.mass
+				self.orbit.parent = self.parent
 			else:
 				raise Exception(f"Couldn't find body named \"{self.parent_name}\"")
 
 			self.orbit.getOrbitClass()
 
-			self.SOI = sphereOfInfluence(self.mass, self.parent.mass, self.sma)
-			self.apo = apoapsis(self.sma, self.ecc)
-			self.peri = periapsis(self.sma, self.ecc)
+			self.SOI = sphereOfInfluence(self.mass, self.parent.mass, self.orbit.sma)
 
 		self.stationary = smaFromPeriod(0, self.mass, self.sidereal_day)
 
@@ -363,9 +361,11 @@ class Orbit:
 	PARABOLIC: str = "PARABOLIC"
 	HYPERBOLIC: str = "HYPERBOLIC"
 
-	def __init__(self, object_mass: float, parent_mass: float, sma: float, ecc: float, inc: float, arg: float, an: float, mean_ano: float, epoch: float = 0.0):
+	def __init__(self, object_mass: float, parent: Body, sma: float, ecc: float, inc: float, arg: float, an: float, mean_ano: float, epoch: float = 0.0, has_parent: bool=True):
+		self.has_parent: bool = has_parent
+
 		self.obj_mass: float = object_mass
-		self.parent_mass: float = parent_mass
+		self.parent: Body = parent
 
 		self.sma: float = sma
 		self.ecc: float = ecc
@@ -398,28 +398,38 @@ class Orbit:
 		return self.orbit_class
 
 	def meanAnomalyAtUT(self, UT: float) -> float:
-		return meanAnomalyAtUT(self.obj_mass, self.parent_mass, self.sma, self.mean_anomaly, self.epoch, UT)
+
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		return meanAnomalyAtUT(self.obj_mass, self.parent.mass, self.sma, self.mean_anomaly, self.epoch, UT)
 
 	def orbitalSpeedAtAltitude(self, altitude: float) -> float:
 		match (self.orbit_class):
 			case Orbit.CIRCULAR:
-				return orbitalSpeed_Circular(self.obj_mass, self.parent_mass, self.sma,)
+				return orbitalSpeed_Circular(self.obj_mass, self.parent.mass, self.sma,)
 
 			case Orbit.ELLIPTICAL:
-				return orbitalSpeed_Elliptical(self.obj_mass, self.parent_mass, altitude, self.sma)
+				return orbitalSpeed_Elliptical(self.obj_mass, self.parent.mass, distanceToCenter, self.sma)
 
 			case Orbit.PARABOLIC:
-				return orbitalSpeed_Parabolic(self.obj_mass, self.parent_mass, altitude)
+				return orbitalSpeed_Parabolic(self.obj_mass, self.parent.mass, distanceToCenter)
 
 			case Orbit.HYPERBOLIC:
-				return orbitalSpeed_Hyperbolic(self.obj_mass, self.parent_mass, altitude, self.sma)
+				return orbitalSpeed_Hyperbolic(self.obj_mass, self.parent.mass, distanceToCenter, self.sma)
 
 			case _:
 				raise Exception("Couldn't identify current orbit class")
 
-	def altitudeAtUT(self, UT: float) -> float:
-		mean_ano: float = self.meanAnomalyAtUT(UT)
-		true_anomaly: float = trueAnomaly(mean_ano, self.ecc)
+
+	def orbitalEnergyAtdistanceToCenter(self, distanceToCenter: float) -> float:
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		E_k: float = 1/2 * self.obj_mass * self.orbitalEnergyAtdistanceToCenter(distanceToCenter)
+		E_p: float = - self.obj_mass * (stdGravParam(self.parent.mass)) / distanceToCenter
+
+		return (E_k + E_p) / self.obj_mass
 
 		return altitudeFromTrueAnomaly(self.ecc, self.sma, true_anomaly)
 
