@@ -414,6 +414,10 @@ class Orbit:
 		return orbital
 
 	def getOrbitClass(self) -> str:
+
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
 		if (self.ecc == 0.0):
 			self.orbit_class = Orbit.CIRCULAR
 		elif (self.ecc < 1.0):
@@ -427,6 +431,29 @@ class Orbit:
 
 		return self.orbit_class
 
+	def getApoapsis(self, ground_relative: bool=False) -> float:
+		apo: float = apoapsis(self.sma, self.ecc)
+
+		if (ground_relative):
+			apo -= self.parent.radius
+
+		return apo
+
+	def getPeriapsis(self, ground_relative: bool=False) -> float:
+		peri: float = periapsis(self.sma, self.ecc)
+
+		if (ground_relative):
+			peri -= self.parent.radius
+
+		return peri
+
+	def meanMotion(self) -> float:
+
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		return meanMotion(self.obj_mass, self.parent.mass, self.sma)
+
 	def meanAnomalyAtUT(self, UT: float) -> float:
 
 		if (self.has_parent == False):
@@ -434,7 +461,18 @@ class Orbit:
 
 		return meanAnomalyAtUT(self.obj_mass, self.parent.mass, self.sma, self.mean_anomaly, self.epoch, UT)
 
-	def orbitalSpeedAtAltitude(self, altitude: float) -> float:
+	def trueAnomalyAtUT(self, UT: float) -> float:
+
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		return trueAnomaly(self.meanAnomalyAtUT(UT), self.ecc)
+
+	def orbitalSpeedAtDistanceToCenter(self, distanceToCenter: float) -> float:
+
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
 		match (self.orbit_class):
 			case Orbit.CIRCULAR:
 				return orbitalSpeed_Circular(self.obj_mass, self.parent.mass, self.sma,)
@@ -451,6 +489,11 @@ class Orbit:
 			case _:
 				raise Exception("Couldn't identify current orbit class")
 
+	def distanceToCenterAtUT(self, UT: float) -> float:
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		return distanceToCenterFromTrueAnomaly(self.ecc, self.sma, self.trueAnomalyAtUT(UT))
 
 	def orbitalEnergyAtdistanceToCenter(self, distanceToCenter: float) -> float:
 		if (self.has_parent == False):
@@ -461,9 +504,31 @@ class Orbit:
 
 		return (E_k + E_p) / self.obj_mass
 
-		return altitudeFromTrueAnomaly(self.ecc, self.sma, true_anomaly)
+	def orbitalEnergyAtTrueAno(self, true_anomaly: float) -> float:
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		return self.orbitalEnergyAtdistanceToCenter(distanceToCenterFromTrueAnomaly(self.ecc, self.sma, true_anomaly))
+
+	def orbitalEnergyAtMeanAno(self, mean_ano: float) -> float:
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		true_ano: float = trueAnomaly(mean_ano, self.ecc)
+
+		return self.orbitalEnergyAtTrueAno(true_ano)
+
+	def orbitalEnergyAtUT(self, UT: float) -> float:
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		return self.orbitalEnergyAtMeanAno(self.meanAnomalyAtUT(UT))
 
 	def orbitalSpeedAtUT(self, UT: float) -> float:
-		altitude: float = self.altitudeAtUT(UT)
 
-		return self.orbitalSpeedAtAltitude(altitude)
+		if (self.has_parent == False):
+			raise ValueError("Undefined behaviour for orbits without parent please don't use the Orbit class if there's no parent body")
+
+		distanceToCenter: float = self.distanceToCenterAtUT(UT)
+
+		return self.orbitalSpeedAtDistanceToCenter(distanceToCenter)
